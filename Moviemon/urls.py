@@ -1,4 +1,4 @@
-"""rush00 URL Configuration
+"""Moviemon URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.0/topics/http/urls/
@@ -19,7 +19,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('worldmap/', include('worldmap.urls')),
-    path('moviedex/', include('movidex.urls')),
+    path('moviedex/', include('moviedex.urls')),
     path('options/', include('options.urls')),
     path('battle/', include('battle.urls'))
 ]
