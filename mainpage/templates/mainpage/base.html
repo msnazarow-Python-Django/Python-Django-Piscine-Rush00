@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +7,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}My site{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     {% block style %}{% endblock %}
 </head>
 <body>
@@ -30,15 +32,15 @@
     <form class="controls" method="POST">
         {% csrf_token %}
         <div class="dpad">
-            <input class="up" type="submit" value="UP">
-            <input class="right" type="submit" value="RIGHT">
-            <input class="down" type="submit" value="DOWN">
-            <input class="left" type="submit" value="LEFT">
+            <input class="up" type="submit" name="UP">
+            <input class="right" type="submit" name="RIGHT">
+            <input class="down" type="submit" name="DOWN">
+            <input class="left" type="submit" name="LEFT">
             <div class="middle"></div>
         </div>
         <div class="a-b">
-            <input class="b" type="submit" value="B">
-            <input class="a" type="submit" value="A">
+            <input class="b" type="submit" value="B" name="B">
+            <input class="a" type="submit" value="A" name="A">
         </div>
     </form>
 
@@ -50,8 +52,8 @@
             <td><label class="start" for="START">START</label></td>
         </tr>
         <tr>
-            <td> <input type="submit" id="SELECT" value="SELECT"></td>
-            <td> <input type="submit" id="START" value="START"> </td>
+            <td> <input type="submit" id="SELECT" name="SELECT"></td>
+            <td> <input type="submit" id="START" name="START"> </td>
         </tr>
         </table>
     </form>

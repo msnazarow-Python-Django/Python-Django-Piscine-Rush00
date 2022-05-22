@@ -5,7 +5,6 @@ from settings import DEFAULT_PLAYER_POSITION, MAP_SIZE, MOVIE_IDS, DEFAULT_PLAYE
 from moviedex.service import Moviemon
 
 
-
 @dataclass
 class GameData:
     player_strength: int
