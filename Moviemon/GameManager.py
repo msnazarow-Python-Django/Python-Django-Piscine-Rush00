@@ -2,7 +2,7 @@ import pickle
 import random
 from dataclasses import dataclass
 from enum import Enum
-
+from singleton_decorator import singleton
 from django.conf import settings
 from moviedex.service import Moviemon
 
@@ -17,18 +17,6 @@ class GameState(Enum):
     saving = 6
     loading = 7
     options = 8
-
-
-def singleton(class_) -> 'GameManager()':
-    instanses = {}
-
-    def getinstansce(*args, **kwargs):
-        if class_ not in instanses:
-            instanses[class_] = class_(*args, **kwargs)
-        return instanses[class_]
-
-    return getinstansce
-
 
 @dataclass
 class GameData:
@@ -91,4 +79,3 @@ class GameManager:
     def load_file(self, save_file):
         with open(save_file, "rb") as save_file:
             self.load(pickle.load(save_file))
-
