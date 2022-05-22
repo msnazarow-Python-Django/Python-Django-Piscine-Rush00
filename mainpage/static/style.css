@@ -345,6 +345,10 @@ body {
   visibility: hidden;
 }
 
+.up, .right, .left, .down {
+  font-size: 0;
+}
+
 input {
   border-style: hidden;
 }

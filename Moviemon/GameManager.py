@@ -1,7 +1,7 @@
 import pickle
 import random
 from dataclasses import dataclass
-from django.conf import settings# DEFAULT_PLAYER_POSITION, MAP_SIZE, MOVIE_IDS, DEFAULT_PLAYER_STRENGTH
+from django.conf import settings
 from moviedex.service import Moviemon
 
 @dataclass

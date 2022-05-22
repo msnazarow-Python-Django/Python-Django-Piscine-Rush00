@@ -1,6 +1,8 @@
 from . import views
 from django.urls import path, include
-# app_name = 'options'
+
 urlpatterns = [
-	# path('', views.IndexView.as_view(), name='index'),
+    path('', views.LoadView.as_view(), name='options'),
+    path('load_game', views.LoadView.as_view(), name='load_game'),
+    path('save_game', views.SaveView.as_view(), name='save_game'),
 ]
