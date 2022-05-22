@@ -134,6 +134,7 @@ OMDB_URL = 'http://www.omdbapi.com'
 
 MAP_SIZE = (11, 11)
 DEFAULT_PLAYER_POSITION = (5, 5)
+DEFAULT_PLAYER_STRENGTH = 5
 
 MOVIE_IDS = {
     'tt0060666',
