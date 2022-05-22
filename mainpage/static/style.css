@@ -340,3 +340,13 @@ body {
 .gameboy {
   margin: 0 auto;
 }
+
+#START, #SELECT, #A, #B {
+  visibility: hidden;
+}
+
+input {
+  border-style: hidden;
+}
+
+
