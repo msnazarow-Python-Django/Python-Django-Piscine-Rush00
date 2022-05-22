@@ -1,10 +1,8 @@
 import pickle
 import random
 from dataclasses import dataclass
-from settings import DEFAULT_PLAYER_POSITION, MAP_SIZE, MOVIE_IDS, DEFAULT_PLAYER_STRENGTH
+from django.conf import settings# DEFAULT_PLAYER_POSITION, MAP_SIZE, MOVIE_IDS, DEFAULT_PLAYER_STRENGTH
 from moviedex.service import Moviemon
-
-
 
 @dataclass
 class GameData:
@@ -13,12 +11,26 @@ class GameData:
     player_movieballs: int
     captured_moviemon_ids: {str}
     movie_info: {str: Moviemon}
+    moviedex_position: int
 
 
 class GameManager:
 
     def __init__(self):
-        self._game_data = GameData(DEFAULT_PLAYER_STRENGTH, DEFAULT_PLAYER_POSITION, 0, {}, Moviemon.get_movies())
+        self._game_data = GameData(settings.DEFAULT_PLAYER_STRENGTH,
+                                   settings.DEFAULT_PLAYER_POSITION,
+                                   0,
+                                   {},
+                                   Moviemon.get_movies(),
+                                   0)
+
+    @property
+    def moviedex_position(self):
+        return self._game_data.moviedex_position
+
+    @moviedex_position.setter
+    def moviedex_position(self, value):
+        self._game_data.moviedex_position = value
 
     def load(self, game_data: GameData):
         self._game_data = game_data
@@ -28,20 +40,25 @@ class GameManager:
         return self._game_data
 
     def get_random_movie(self) -> Moviemon:
-        return random.choice(MOVIE_IDS - self._game_data.captured_moviemon_ids)
+        return random.choice(settings.MOVIE_IDS - self._game_data.captured_moviemon_ids)
 
     def get_strength(self) -> int:
         return self._game_data.player_strength
 
     def load_default_settings(self) -> 'GameManager':
-        self._game_data = GameData(DEFAULT_PLAYER_STRENGTH, DEFAULT_PLAYER_POSITION, 0, {}, Moviemon.get_movies())
+        self._game_data = GameData(settings.DEFAULT_PLAYER_STRENGTH,
+                                   settings.DEFAULT_PLAYER_POSITION,
+                                   0,
+                                   {},
+                                   Moviemon.get_movies(),
+                                   0)
         return self
 
     def get_movie(self, id: int):
         return self._game_data.movie_info[id]
 
     def save(self, slot_name):
-        with open(f"slot{slot_name}_{len(self._game_data.captured_moviemon_ids)}_{len(MOVIE_IDS)}.mmg",
+        with open(f"slot{slot_name}_{len(self._game_data.captured_moviemon_ids)}_{len(settings.MOVIE_IDS)}.mmg",
                   "wb") as save_file:
             pickle.dump(self.dump(), save_file)
 
