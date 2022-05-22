@@ -2,12 +2,8 @@ import pickle
 import random
 from dataclasses import dataclass
 from settings import DEFAULT_PLAYER_POSITION, MAP_SIZE, MOVIE_IDS, DEFAULT_PLAYER_STRENGTH
+from moviedex.service import Moviemon
 
-
-@dataclass
-class Moviemon:
-    id: int
-    name: str
 
 
 @dataclass
@@ -15,14 +11,14 @@ class GameData:
     player_strength: int
     player_position: (int, int)
     player_movieballs: int
-    captured_moviemon_ids: {int}
-    movie_info: {int: Moviemon}
+    captured_moviemon_ids: {str}
+    movie_info: {str: Moviemon}
 
 
 class GameManager:
 
     def __init__(self):
-        self._game_data = GameData(DEFAULT_PLAYER_STRENGTH, DEFAULT_PLAYER_POSITION, 0, {}, {})
+        self._game_data = GameData(DEFAULT_PLAYER_STRENGTH, DEFAULT_PLAYER_POSITION, 0, {}, Moviemon.get_movies())
 
     def load(self, game_data: GameData):
         self._game_data = game_data
@@ -38,7 +34,7 @@ class GameManager:
         return self._game_data.player_strength
 
     def load_default_settings(self) -> 'GameManager':
-        self._game_data = GameData(DEFAULT_PLAYER_STRENGTH, DEFAULT_PLAYER_POSITION, 0, {}, {})
+        self._game_data = GameData(DEFAULT_PLAYER_STRENGTH, DEFAULT_PLAYER_POSITION, 0, {}, Moviemon.get_movies())
         return self
 
     def get_movie(self, id: int):
