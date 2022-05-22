@@ -10,4 +10,4 @@ class IndexView(generic.TemplateView):
         if request.POST.get('A'):
             return redirect('worldmap')
         elif request.POST.get('B'):
-            return redirect('load')
+            return redirect('load_game')
