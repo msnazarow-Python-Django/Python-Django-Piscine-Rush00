@@ -30,10 +30,10 @@
     <form class="controls" method="POST">
         {% csrf_token %}
         <div class="dpad">
-            <input class="up" type="submit" value="">
-            <input class="right" type="submit" value="">
-            <input class="down" type="submit" value="">
-            <input class="left" type="submit" value="">
+            <input class="up" type="submit" value="UP">
+            <input class="right" type="submit" value="RIGHT">
+            <input class="down" type="submit" value="DOWN">
+            <input class="left" type="submit" value="LEFT">
             <div class="middle"></div>
         </div>
         <div class="a-b">
@@ -50,8 +50,8 @@
             <td><label class="start" for="START">START</label></td>
         </tr>
         <tr>
-            <td> <input type="submit" id="SELECT"></td>
-            <td> <input type="submit" id="START"> </td>
+            <td> <input type="submit" id="SELECT" value="SELECT"></td>
+            <td> <input type="submit" id="START" value="START"> </td>
         </tr>
         </table>
     </form>
