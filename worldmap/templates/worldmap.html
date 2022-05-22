@@ -5,5 +5,17 @@
     <link rel="stylesheet" href="{% static 'style.css' %}">
 {% endblock %}
 {% block content %}
-    <table class="display"><tr><td>New Game [A]</td></tr><tr><td>Load [B]</td></tr></table>
+    <table class="display">
+    {% for row in frame %}
+        <tr>
+        {% for el in row %}
+            {% if el == 0 %}
+                <td style="background: #78b930"></td>
+            {% elif el == -1 %}
+                <td style="background: #831f0d"></td>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
 {% endblock %}

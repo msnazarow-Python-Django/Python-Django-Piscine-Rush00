@@ -132,7 +132,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 OMDB_APIKEY = os.environ.get('OMDB_APIKEY') or '7d9dfd8c'
 OMDB_URL = 'http://www.omdbapi.com'
 
-MAP_SIZE = (11, 11)
+MAP_SIZE = (20, 20)
+FRAME_SIZE = (11, 11)
 DEFAULT_PLAYER_POSITION = (5, 5)
 DEFAULT_PLAYER_STRENGTH = 5
 
