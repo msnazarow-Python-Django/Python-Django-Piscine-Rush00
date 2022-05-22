@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views import generic
+from Moviemon.mixins import GamedataContextMixin
 
 
-class IndexView(generic.TemplateView):
+
+class IndexView(GamedataContextMixin, generic.TemplateView):
     template_name = 'mainpage/index.html'
 
     def post(self, request):

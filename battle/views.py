@@ -1,9 +1,10 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from Moviemon.mixins import GamedataContextMixin
 
 
-class BattleView(TemplateView):
+class BattleView(GamedataContextMixin, TemplateView):
     template_name = "battle.html"
 
     def post(self, request):

@@ -1,9 +1,10 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from Moviemon.mixins import GamedataContextMixin
 
 
-class LoadView(TemplateView):
+class LoadView(GamedataContextMixin, TemplateView):
     template_name = "saveload.html"
 
     def post(self, request):

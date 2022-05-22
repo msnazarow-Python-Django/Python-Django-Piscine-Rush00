@@ -1,6 +1,7 @@
 from . import views
 from django.urls import path, include
-# app_name = 'options'
+app_name = 'moviedex'
 urlpatterns = [
-	# path('', views.IndexView.as_view(), name='index'),
+    path('', views.MoviedexView.as_view(), name='index'),
+    path('<str:movie_id>/', views.MoviedexDetailView.as_view(), name='detail')
 ]
