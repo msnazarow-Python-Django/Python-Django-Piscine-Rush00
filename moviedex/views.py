@@ -43,7 +43,9 @@ class MoviedexView(GamedataContextMixin, View):
         print(key)
         if key == 'SELECT':
             game_manager.reset_slot_position()
-            return redirect('worldmap')
+            page = '/worldmap'
+            game_manager.game_data.current_page = page
+            return redirect(page)
         elif key == 'A':
             game_manager.reset_slot_position()
 
