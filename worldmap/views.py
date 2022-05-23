@@ -18,7 +18,7 @@ class WorldmapView(GamedataContextMixin, TemplateView):
         if key == 'START':
             return redirect('options')
         elif key == 'SELECT':
-            return redirect('moviedex')
+            return redirect('moviedex:index')
         elif key == 'A':
             if game_manager.game_data.state == GameState.ready_to_battle:
                 return redirect('battle')
