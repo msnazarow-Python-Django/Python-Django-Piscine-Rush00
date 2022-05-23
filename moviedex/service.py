@@ -9,8 +9,8 @@ class Moviemon:
         self.id: str = movie['imdbID']
         self.title: str = movie['Title']
         self.director: str = movie['Director']
-        self.year: int = int(movie['Year'])
-        self.rating: float = float(movie['imdbRating'])
+        self.year: str = movie['Year']
+        self.rating: str = movie['imdbRating']
         self.poster_url: str = movie['Poster']
         self.synopsis: str = movie['Plot']
         self.actors: str = movie['Actors']
