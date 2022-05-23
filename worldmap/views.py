@@ -22,7 +22,7 @@ class WorldmapView(GamedataContextMixin, TemplateView):
         key = request.POST.get('KEY')
         if game_manager.game_data.state == GameState.worldmap:
             if key == 'START':
-                game_manager.game_data.current_page = "options"
+                game_manager.game_data.current_page = "/options"
                 return redirect('/options')
             elif key == 'SELECT':
                 game_manager.game_data.current_page = "/moviedex"

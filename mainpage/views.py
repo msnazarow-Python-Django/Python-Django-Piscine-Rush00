@@ -21,5 +21,5 @@ class IndexView(GamedataContextMixin, generic.TemplateView):
             return redirect('/worldmap')
         elif key == "B":
             game_manager.game_data.state = GameState.loading
-            game_manager.game_data.current_page = "load_game"
+            game_manager.game_data.current_page = "/options/load_game"
             return redirect('/options/load_game')

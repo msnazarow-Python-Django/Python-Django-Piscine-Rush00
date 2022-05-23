@@ -7,7 +7,7 @@ from Moviemon.GameManager import GameManager
 
 class LoadView(GamedataContextMixin, View):
     def get(self, request):
-        if GameManager().game_data.current_page != 'options/load_game':
+        if GameManager().game_data.current_page != '/options/load_game':
             return redirect(GameManager().game_data.current_page)
         context = self.get_context_data()
         game_data = GameManager().game_data
