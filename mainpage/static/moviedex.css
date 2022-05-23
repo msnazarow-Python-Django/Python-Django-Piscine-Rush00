@@ -1,6 +1,5 @@
 .moviedex-poster {
     list-style-type: none;
-    margin: 5px;
     text-align: left;
     ;
 }
@@ -10,11 +9,13 @@
     width: 100%;
     height: 100%;
     padding: 0px;
+    margin: 0px;
 }
 
 .moviedex-poster {
     height: 30%;
     width: 90%;
+    padding: 5px;
 }
 
 .movie-title {
@@ -26,4 +27,15 @@
     font-family: "PT Sans";
     font-weight: normal;
 
+}
+
+.footer {
+    list-style-type: none;
+    height: 10%;
+    font-size: 10px;
+    text-align: left;
+}
+
+.right, .left, .start, .b {
+    pointer-events: none;
 }
