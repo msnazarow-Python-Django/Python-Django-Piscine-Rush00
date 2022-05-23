@@ -38,11 +38,12 @@ class OptionsView(TemplateView):
     template_name = "options.html"
 
     def post(self, request):
-        if request.POST.get('A'):
+        key = request.POST.get('KEY')
+        if key == 'A':
             return redirect('save')
-        elif request.POST.get('START'):
+        elif key == 'START':
             return redirect('worldmap')
-        elif request.POST.get('B'):
+        elif key == 'B':
             return redirect('mainpage')
         else:
             return HttpResponseRedirect(request.path_info)
