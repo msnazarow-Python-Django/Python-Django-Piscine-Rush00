@@ -15,17 +15,18 @@ class WorldmapView(GamedataContextMixin, TemplateView):
 
     def post(self, request):
         key = request.POST.get('KEY')
-        if key == 'START':
-            return redirect('options')
-        elif key == 'SELECT':
-            return redirect('moviedex:index')
-        elif key == 'A':
-            if game_manager.game_data.state == GameState.ready_to_battle:
-                return redirect('battle')
-            elif game_manager.game_data.state == GameState.movieball_found:
-                return HttpResponseRedirect(request.path_info)
-        elif key == "UP" or key == "DOWN" or key == "RIGHT" or key == "LEFT":
-            game_manager.move(key)
-            return HttpResponseRedirect(request.path_info)
-        else:
-            return HttpResponseRedirect(request.path_info)
+        if game_manager.game_data.state == GameState.worldmap:
+            if key == 'START':
+                return redirect('options')
+            elif key == 'SELECT':
+                return redirect('moviedex:index')
+            elif (key == "UP" or key == "DOWN" or key == "RIGHT" or key == "LEFT"):
+                game_manager.move(key)
+        elif game_manager.game_data.state == GameState.ready_to_battle:
+            if key == 'A':
+                return redirect(f'battle/{game_manager.get_random_movie()}')
+        elif game_manager.game_data.state == GameState.movieball_found:
+            if key == 'A':
+                game_manager.game_data.state = GameState.worldmap
+                game_manager.game_data.player_movieballs += 1
+        return HttpResponseRedirect(request.path_info)

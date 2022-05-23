@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from Moviemon.mixins import GamedataContextMixin
 from Moviemon.GameManager import GameManager, GameState
 
-game_manager = GameManager()
+game_manager: GameManager = GameManager()
 
 
 class BattleView(GamedataContextMixin, TemplateView):
@@ -17,5 +17,6 @@ class BattleView(GamedataContextMixin, TemplateView):
             return redirect('worldmap')
         elif key == "A" and False:
             pass  # do logic
-        else:
-            return HttpResponseRedirect(request.path_info)
+
+        game_manager.game_data.state == GameState.worldmap
+        return HttpResponseRedirect(request.path_info)

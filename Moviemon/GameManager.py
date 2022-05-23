@@ -9,7 +9,11 @@ from django.conf import settings
 from moviedex.service import Moviemon
 import numpy as np
 
+def forDjango(cls):
+    cls.do_not_call_in_templates = True
+    return cls
 
+@forDjango
 class GameState(Enum):
     start_screen = 0
     worldmap = 1
@@ -51,7 +55,7 @@ class GameManager:
         return self.game_data
 
     def get_random_movie(self) -> Moviemon:
-        return random.choice(settings.MOVIE_IDS - set(self.game_data.captured_moviemon_ids))
+        return random.choice(tuple(self.game_data.non_captured_moviemon_ids))
 
     def get_strength(self) -> int:
         return self.game_data.player_strength
@@ -111,19 +115,19 @@ class GameManager:
     def move(self, direction):
         self.game_data.map[self.game_data.player_position[1]][self.game_data.player_position[0]] = 0
         if direction == "LEFT":
+            self.game_data.move_right = False
             self.game_data.player_position[0] = max(self.game_data.player_position[0] - 1, 0)
         elif direction == "RIGHT":
+            self.game_data.move_right = True
             self.game_data.player_position[0] = min(self.game_data.player_position[0] + 1, settings.MAP_SIZE[0] - 1)
         elif direction == "UP":
             self.game_data.player_position[1] = max(self.game_data.player_position[1] - 1, 0)
         elif direction == "DOWN":
             self.game_data.player_position[1] = min(self.game_data.player_position[1] + 1, settings.MAP_SIZE[1] - 1)
-
         if self.game_data.map[self.game_data.player_position[1]][self.game_data.player_position[0]] == 1:
             self.game_data.state = GameState.movieball_found
         elif self.game_data.map[self.game_data.player_position[1]][self.game_data.player_position[0]] == 2:
             self.game_data.state = GameState.ready_to_battle
-
         self.game_data.map[self.game_data.player_position[1], self.game_data.player_position[0]] = -1
 
     def change_moviedex_position(self, value):
