@@ -3,5 +3,5 @@ from django.urls import path, include
 app_name = 'moviedex'
 urlpatterns = [
     path('', views.MoviedexView.as_view(), name='index'),
-    path('<str:movie_id>/', views.MoviedexDetailView.as_view(), name='detail')
+    path('<slug:movie_id>/', views.MoviedexDetailView.as_view(), name='detail')
 ]

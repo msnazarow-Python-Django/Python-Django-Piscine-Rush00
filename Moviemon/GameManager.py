@@ -125,3 +125,8 @@ class GameManager:
             self.game_data.state = GameState.ready_to_battle
 
         self.game_data.map[self.game_data.player_position[1], self.game_data.player_position[0]] = -1
+
+    def change_moviedex_postition(self, value):
+        new_position = self.game_data.moviedex_position + value
+        if 0 < new_position < len(self.game_data.captured_moviemon_ids):
+            self.game_data.moviedex_position = new_position
