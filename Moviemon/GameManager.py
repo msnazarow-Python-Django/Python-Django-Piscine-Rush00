@@ -28,7 +28,7 @@ class GameData:
     player_strength: int
     player_position: [int]
     player_movieballs: int
-    captured_moviemon_ids: {str}
+    captured_moviemon_ids: [str]
     non_captured_moviemon_ids: {str}
     movie_info: {str: Moviemon}
     moviedex_position: int
@@ -51,7 +51,7 @@ class GameManager:
         return self.game_data
 
     def get_random_movie(self) -> Moviemon:
-        return random.choice(settings.MOVIE_IDS - self.game_data.captured_moviemon_ids)
+        return random.choice(settings.MOVIE_IDS - set(self.game_data.captured_moviemon_ids))
 
     def get_strength(self) -> int:
         return self.game_data.player_strength
