@@ -9,6 +9,9 @@ game_manager: GameManager = GameManager()
 class MoviedexView(GamedataContextMixin, View):
 
     def get(self, request):
+        if game_manager.game_data.current_page != '/moviedex':
+            return redirect(game_manager.game_data.current_page)
+
         context = self.get_context_data()
         game_data = game_manager.game_data
 
@@ -35,8 +38,7 @@ class MoviedexView(GamedataContextMixin, View):
         context['no_catched'] = no_catched
         return render(request, "moviedex/index.html", context)
 
-    def post(self, request):
-
+    def post(self, request, *args, **kwargs):
         key = request.POST.get('KEY')
         print(key)
         if key == 'SELECT':
@@ -51,7 +53,9 @@ class MoviedexView(GamedataContextMixin, View):
                 game_manager.game_data.slot_position
             ]
             game_manager.reset_slot_position()
-            return HttpResponseRedirect(f'/moviedex/{movie_id}')
+            page = f'/moviedex/{movie_id}'
+            game_manager.game_data.current_page = page
+            return HttpResponseRedirect(page)
         elif key == 'UP':
             game_manager.change_moviedex_position(-1)
         elif key == 'DOWN':
@@ -61,6 +65,9 @@ class MoviedexView(GamedataContextMixin, View):
 
 class MoviedexDetailView(GamedataContextMixin, View):
     def get(self, request, movie_id):
+        if game_manager.game_data.current_page != f'/moviedex/{movie_id}':
+            return redirect(game_manager.game_data.current_page)
+
         context = self.get_context_data()
         game_data = game_manager.game_data
         if movie_id not in game_data.captured_moviemon_ids:
@@ -68,10 +75,11 @@ class MoviedexDetailView(GamedataContextMixin, View):
         context['movie'] = game_data.movie_info[movie_id]
         return render(request, 'moviedex/detail.html', context)
 
-    def post(self, request, movie_id):
+    def post(self, request, *args, **kwargs):
         key = request.POST.get('KEY')
         if key == 'B':
-            return redirect('moviedex:index')
+            game_manager.game_data.current_page = "/moviedex"
+            return redirect('/moviedex')
         else:
             return HttpResponseRedirect(request.path_info)
 

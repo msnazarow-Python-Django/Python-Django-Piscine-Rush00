@@ -13,19 +13,29 @@ game_manager: GameManager = GameManager()
 class WorldmapView(GamedataContextMixin, TemplateView):
     template_name = "worldmap.html"
 
-    def post(self, request):
+    def get(self, request, *args, **kwargs):
+        if game_manager.game_data.current_page != '/worldmap':
+            return redirect(game_manager.game_data.current_page)
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
         key = request.POST.get('KEY')
-        if key == 'START':
-            return redirect('options')
-        elif key == 'SELECT':
-            return redirect('moviedex:index')
-        elif key == 'A':
-            if game_manager.game_data.state == GameState.ready_to_battle:
-                return redirect('battle')
-            elif game_manager.game_data.state == GameState.movieball_found:
-                return HttpResponseRedirect(request.path_info)
-        elif key == "UP" or key == "DOWN" or key == "RIGHT" or key == "LEFT":
-            game_manager.move(key)
-            return HttpResponseRedirect(request.path_info)
-        else:
-            return HttpResponseRedirect(request.path_info)
+        if game_manager.game_data.state == GameState.worldmap:
+            if key == 'START':
+                game_manager.game_data.current_page = "options"
+                return redirect('/options')
+            elif key == 'SELECT':
+                game_manager.game_data.current_page = "/moviedex"
+                return redirect('/moviedex')
+            elif (key == "UP" or key == "DOWN" or key == "RIGHT" or key == "LEFT"):
+                game_manager.move(key)
+        elif game_manager.game_data.state == GameState.ready_to_battle:
+            if key == 'A':
+                page = f'/battle/{game_manager.get_random_movie()}'
+                game_manager.game_data.current_page = page
+                return redirect(page)
+        elif game_manager.game_data.state == GameState.movieball_found:
+            if key == 'A':
+                game_manager.game_data.state = GameState.worldmap
+                game_manager.game_data.player_movieballs += 1
+        return HttpResponseRedirect(request.path_info)

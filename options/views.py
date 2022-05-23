@@ -41,7 +41,7 @@ class SaveView(GamedataContextMixin, View):
         context['a_button'] = 'Save'
         return render(request, 'saveload.html', context)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         key = request.POST.get('KEY')
         if key == 'A':
             GameManager().save_game()
@@ -59,7 +59,7 @@ class SaveView(GamedataContextMixin, View):
 class OptionsView(TemplateView):
     template_name = "options.html"
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         key = request.POST.get('KEY')
         if key == 'A':
             return redirect('save_game')
