@@ -1,7 +1,7 @@
 .gameboy {
   position: relative;
-  width: 350px;
-  height: 570px;
+  width: 470px;
+  height: 470px;
   border-radius: 20px;
   padding: 20px;
   background-color: #cb930b;
@@ -36,7 +36,7 @@
 .gameboy .screen-area .display {
   background-color: #929d97;
   height: 190px;
-  width: 210px;
+  width: 335px;
   border-radius: 3px;
   margin-bottom: 15px;
   text-align: center;
@@ -283,10 +283,13 @@
 }
 
 .gameboy .start-select {
-  width: 100%;
+  width: fit-content;
   height: 60px;
   display: flex;
+  margin: auto;
   justify-content: center;
+  position: relative;
+  top: -105px;
 }
 
 .gameboy .start-select .select, .gameboy .start-select .start {

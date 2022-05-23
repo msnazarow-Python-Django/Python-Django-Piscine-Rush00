@@ -29,6 +29,7 @@ class GameData:
     player_position: [int]
     player_movieballs: int
     captured_moviemon_ids: {str}
+    non_captured_moviemon_ids: {str}
     movie_info: {str: Moviemon}
     moviedex_position: int
     state: GameState
@@ -56,15 +57,22 @@ class GameManager:
         return self.game_data.player_strength
 
     def load_default_settings(self) -> 'GameManager':
-        self.game_data = GameData(settings.DEFAULT_PLAYER_STRENGTH,
-                                  list(settings.DEFAULT_PLAYER_POSITION),
-                                  0,
-                                  {},
-                                  Moviemon.get_movies(),
-                                  0,
-                                  GameState.start_screen,
-                                  np.zeros((settings.MAP_SIZE[0], settings.MAP_SIZE[1])))
+        self.game_data = GameData(player_strength=settings.DEFAULT_PLAYER_STRENGTH,
+                                  player_position=list(settings.DEFAULT_PLAYER_POSITION),
+                                  player_movieballs=settings.DEFAULT_PLAYER_MOVIEBALLS,
+                                  captured_moviemon_ids=set(),
+                                  non_captured_moviemon_ids=settings.MOVIE_IDS,
+                                  movie_info=Moviemon.get_movies(),
+                                  moviedex_position=0,
+                                  state=GameState.start_screen,
+                                  map=np.zeros((settings.MAP_SIZE[0], settings.MAP_SIZE[1])))
+
+        for i in range(min(len(settings.MOVIE_IDS), max(settings.FRAME_SIZE))):
+            self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][random.randint(0, settings.MAP_SIZE[0] - 1)] = 2
+            self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][random.randint(0, settings.MAP_SIZE[0] - 1)] = 1
+
         self.game_data.map[self.game_data.player_position[1], self.game_data.player_position[0]] = -1
+
         return self
 
     def get_movie(self, id: int):
