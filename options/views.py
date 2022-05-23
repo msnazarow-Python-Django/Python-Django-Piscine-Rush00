@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View, TemplateView
 from Moviemon.mixins import GamedataContextMixin
 from Moviemon.GameManager import GameManager
+from options.service import search_saved_slots
 
 
 class LoadView(GamedataContextMixin, View):
@@ -10,6 +11,7 @@ class LoadView(GamedataContextMixin, View):
         if GameManager().game_data.current_page != '/options/load_game':
             return redirect(GameManager().game_data.current_page)
         context = self.get_context_data()
+        search_saved_slots()
         game_data = GameManager().game_data
         context['slots'] = game_data.save_slots
         context['a_button'] = 'Load'
@@ -43,6 +45,7 @@ class SaveView(GamedataContextMixin, View):
         if GameManager().game_data.current_page != '/options/save_game':
             return redirect(GameManager().game_data.current_page)
         context = self.get_context_data()
+        search_saved_slots()
         game_data = GameManager().game_data
         context['slots'] = game_data.save_slots
         context['a_button'] = 'Save'
