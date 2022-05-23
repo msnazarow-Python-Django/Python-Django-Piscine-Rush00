@@ -16,8 +16,9 @@ class LoadView(GamedataContextMixin, View):
         return render(request, 'saveload.html', context)
 
     def post(self, request):
+        key = request.POST.get('KEY')
+        print(key, request.path_info)
         if not GameManager().game_data.loaded:
-            key = request.POST.get('KEY')
 
             if key == 'A':
                 GameManager().load_game()

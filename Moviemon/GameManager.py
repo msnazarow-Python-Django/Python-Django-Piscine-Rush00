@@ -1,3 +1,4 @@
+import os
 import pickle
 import random
 from dataclasses import dataclass
@@ -160,15 +161,20 @@ class GameManager:
 
     def save_game(self):
         slot_pos = self.game_data.slot_position
-        self.save('ABC'[slot_pos])
         self.game_data.save_slots[slot_pos][1] = (
             f'{len(self.game_data.captured_moviemon_ids)}/{len(settings.MOVIE_IDS)}'
         )
+        for file in os.listdir(os.getcwd()):
+            if file.startswith(f'slot{"ABC"[slot_pos]}'):
+                os.remove(file)
+        self.save('ABC'[slot_pos])
+
 
     def load_game(self):
         pos = self.game_data.slot_position
         slot = self.game_data.save_slots[pos][1]
-
+        if slot == 'Free':
+            return
         file_name = f'slot{"ABC"[pos]}/{slot}.mmg'.replace('/', '_')
         self.load_file(file_name)
         self.game_data.loaded = True
