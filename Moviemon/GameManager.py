@@ -178,6 +178,7 @@ class GameManager:
         file_name = f'slot{"ABC"[pos]}/{slot}.mmg'.replace('/', '_')
         self.load_file(file_name)
         self.game_data.loaded = True
+        self.game_data.current_page = '/options/load_game'
 
     def reset_slot_position(self):
         self.game_data.slot_position = 0
