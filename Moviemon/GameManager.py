@@ -31,9 +31,11 @@ class GameData:
     captured_moviemon_ids: [str]
     non_captured_moviemon_ids: {str}
     movie_info: {str: Moviemon}
-    moviedex_position: int
+    slot_position: int
     state: GameState
     map: [[int]]
+    save_slots: [str, str]
+    loaded: bool
 
 
 @singleton
@@ -57,19 +59,29 @@ class GameManager:
         return self.game_data.player_strength
 
     def load_default_settings(self) -> 'GameManager':
-        self.game_data = GameData(player_strength=settings.DEFAULT_PLAYER_STRENGTH,
-                                  player_position=list(settings.DEFAULT_PLAYER_POSITION),
-                                  player_movieballs=settings.DEFAULT_PLAYER_MOVIEBALLS,
-                                  captured_moviemon_ids=[],
-                                  non_captured_moviemon_ids=settings.MOVIE_IDS,
-                                  movie_info=Moviemon.get_movies(),
-                                  moviedex_position=0,
-                                  state=GameState.start_screen,
-                                  map=np.zeros((settings.MAP_SIZE[0], settings.MAP_SIZE[1])))
+        self.game_data = GameData(
+            player_strength=settings.DEFAULT_PLAYER_STRENGTH,
+            player_position=list(settings.DEFAULT_PLAYER_POSITION),
+            player_movieballs=settings.DEFAULT_PLAYER_MOVIEBALLS,
+            captured_moviemon_ids=[],
+            non_captured_moviemon_ids=settings.MOVIE_IDS,
+            movie_info=Moviemon.get_movies(),
+            slot_position=0,
+            state=GameState.start_screen,
+            map=np.zeros((settings.MAP_SIZE[0], settings.MAP_SIZE[1])),
+            save_slots=[
+                ['Slot A', 'Free'],
+                ['Slot B', 'Free'],
+                ['Slot C', 'Free']
+            ],
+            loaded=False
+        )
 
         for i in range(min(len(settings.MOVIE_IDS), max(settings.FRAME_SIZE))):
-            self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][random.randint(0, settings.MAP_SIZE[0] - 1)] = 2
-            self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][random.randint(0, settings.MAP_SIZE[0] - 1)] = 1
+            self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][
+                random.randint(0, settings.MAP_SIZE[0] - 1)] = 2
+            self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][
+                random.randint(0, settings.MAP_SIZE[0] - 1)] = 1
 
         self.game_data.map[self.game_data.player_position[1], self.game_data.player_position[0]] = -1
 
@@ -101,10 +113,14 @@ class GameManager:
         top_padding = floor(settings.FRAME_SIZE[0] / 2)
         bottom_padding = ceil(settings.FRAME_SIZE[0] / 2)
         half_height = settings.FRAME_SIZE[1] // 2
-        leftX = min(settings.MAP_SIZE[0] - settings.FRAME_SIZE[0], max(self.game_data.player_position[0] - left_padding, 0))
-        rightX = min(settings.MAP_SIZE[0], max(self.game_data.player_position[0] + right_padding, settings.FRAME_SIZE[0]))
-        topY = min(settings.MAP_SIZE[1] - settings.FRAME_SIZE[1], max(self.game_data.player_position[1] - top_padding, 0))
-        bottomY = min(settings.MAP_SIZE[1], max(self.game_data.player_position[1] + bottom_padding, settings.FRAME_SIZE[1]))
+        leftX = min(settings.MAP_SIZE[0] - settings.FRAME_SIZE[0],
+                    max(self.game_data.player_position[0] - left_padding, 0))
+        rightX = min(settings.MAP_SIZE[0],
+                     max(self.game_data.player_position[0] + right_padding, settings.FRAME_SIZE[0]))
+        topY = min(settings.MAP_SIZE[1] - settings.FRAME_SIZE[1],
+                   max(self.game_data.player_position[1] - top_padding, 0))
+        bottomY = min(settings.MAP_SIZE[1],
+                      max(self.game_data.player_position[1] + bottom_padding, settings.FRAME_SIZE[1]))
 
         return self.game_data.map[topY: bottomY, leftX: rightX]
 
@@ -127,6 +143,29 @@ class GameManager:
         self.game_data.map[self.game_data.player_position[1], self.game_data.player_position[0]] = -1
 
     def change_moviedex_position(self, value):
-        new_position = self.game_data.moviedex_position + value
-        if 0 < new_position < len(self.game_data.captured_moviemon_ids):
+        new_position = self.game_data.slot_position + value
+        if 0 <= new_position < len(self.game_data.captured_moviemon_ids):
             self.game_data.moviedex_position = new_position
+
+    def change_slot_position(self, value):
+        new_position = self.game_data.slot_position + value
+        if 0 <= new_position < 3:
+            self.game_data.slot_position = new_position
+
+    def save_game(self):
+        slot_pos = self.game_data.slot_position
+        self.save('ABC'[slot_pos])
+        self.game_data.save_slots[slot_pos][1] = (
+            f'{len(self.game_data.captured_moviemon_ids)}/{len(settings.MOVIE_IDS)}'
+        )
+
+    def load_game(self):
+        pos = self.game_data.slot_position
+        slot = self.game_data.save_slots[pos][1]
+
+        file_name = f'slot{"ABC"[pos]}/{slot}.mmg'.replace('/', '_')
+        self.load_file(file_name)
+        self.game_data.loaded = True
+
+    def reset_slot_position(self):
+        self.game_data.slot_position = 0

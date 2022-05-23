@@ -1,38 +1,60 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+from django.views.generic import View, TemplateView
 from Moviemon.mixins import GamedataContextMixin
+from Moviemon.GameManager import GameManager
 
 
-class LoadView(GamedataContextMixin, TemplateView):
-    template_name = "saveload.html"
+class LoadView(GamedataContextMixin, View):
+    def get(self, request):
+        context = self.get_context_data()
+        game_data = GameManager().game_data
+        context['slots'] = game_data.save_slots
+        context['a_button'] = 'Load'
+        return render(request, 'saveload.html', context)
 
     def post(self, request):
-        if request.POST.get('A'):
-            pass #logic
-        elif request.POST.get('UP'):
-            pass  # logic
-        elif request.POST.get('DOWN'):
-            pass  # logic
-        elif request.POST.get('B'):
-            return redirect('mainpage')
-        else:
+        if not GameManager().game_data.loaded:
+            key = request.POST.get('KEY')
+
+            if key == 'A':
+                GameManager().load_game()
+            elif key == 'B':
+                GameManager().reset_slot_position()
+                return redirect('mainpage')
+            elif key == 'UP':
+                GameManager().change_slot_position(-1)
+            elif key == 'DOWN':
+                GameManager().change_slot_position(1)
             return HttpResponseRedirect(request.path_info)
+        else:
+            GameManager().game_data.loaded = False
+            GameManager().reset_slot_position()
+            return redirect('worldmap')
 
-class SaveView(TemplateView):
-    template_name = "saveload.html"
+
+class SaveView(GamedataContextMixin, View):
+    def get(self, request):
+        context = self.get_context_data()
+        game_data = GameManager().game_data
+        context['slots'] = game_data.save_slots
+        context['a_button'] = 'Save'
+        return render(request, 'saveload.html', context)
 
     def post(self, request):
-        if request.POST.get('A'):
-            pass #logic
-        elif request.POST.get('UP'):
-            pass  # logic
-        elif request.POST.get('DOWN'):
-            pass  # logic
-        elif request.POST.get('B'):
+        key = request.POST.get('KEY')
+        if key == 'A':
+            GameManager().save_game()
+            return HttpResponseRedirect(request.path_info)
+        elif key == 'B':
+            GameManager().reset_slot_position()
             return redirect('options')
-        else:
-            return HttpResponseRedirect(request.path_info)
+        elif key == 'UP':
+            GameManager().change_slot_position(-1)
+        elif key == 'DOWN':
+            GameManager().change_slot_position(1)
+        return HttpResponseRedirect(request.path_info)
+
 
 class OptionsView(TemplateView):
     template_name = "options.html"
@@ -40,7 +62,7 @@ class OptionsView(TemplateView):
     def post(self, request):
         key = request.POST.get('KEY')
         if key == 'A':
-            return redirect('save')
+            return redirect('save_game')
         elif key == 'START':
             return redirect('worldmap')
         elif key == 'B':

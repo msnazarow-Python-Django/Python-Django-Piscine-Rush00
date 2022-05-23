@@ -23,6 +23,7 @@ class Moviemon:
         """
         movies = {}
         ids = tuple(settings.MOVIE_IDS)
+        # TODO function MUST get info about ALL films from MOVIE_IDS
         while len(movies) < 10:
             random_id = random.choice(ids)
             if random_id not in movies:
