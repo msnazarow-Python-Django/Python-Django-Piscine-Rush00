@@ -7,7 +7,7 @@ from Moviemon.mixins import GamedataContextMixin
 class LoadView(GamedataContextMixin, TemplateView):
     template_name = "saveload.html"
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         if request.POST.get('A'):
             pass #logic
         elif request.POST.get('UP'):
@@ -22,7 +22,7 @@ class LoadView(GamedataContextMixin, TemplateView):
 class SaveView(TemplateView):
     template_name = "saveload.html"
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         if request.POST.get('A'):
             pass #logic
         elif request.POST.get('UP'):
@@ -37,7 +37,7 @@ class SaveView(TemplateView):
 class OptionsView(TemplateView):
     template_name = "options.html"
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         key = request.POST.get('KEY')
         if key == 'A':
             return redirect('save')

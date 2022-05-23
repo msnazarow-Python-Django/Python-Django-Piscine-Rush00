@@ -38,6 +38,7 @@ class GameData:
     moviedex_position: int
     state: GameState
     map: [[int]]
+    current_page: str
 
 
 @singleton
@@ -69,7 +70,8 @@ class GameManager:
                                   movie_info=Moviemon.get_movies(),
                                   moviedex_position=0,
                                   state=GameState.start_screen,
-                                  map=np.zeros((settings.MAP_SIZE[0], settings.MAP_SIZE[1])))
+                                  map=np.zeros((settings.MAP_SIZE[0], settings.MAP_SIZE[1])),
+                                  current_page='/')
 
         for i in range(min(len(settings.MOVIE_IDS), max(settings.FRAME_SIZE))):
             self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][random.randint(0, settings.MAP_SIZE[0] - 1)] = 2
