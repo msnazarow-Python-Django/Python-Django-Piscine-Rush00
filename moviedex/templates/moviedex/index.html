@@ -8,11 +8,14 @@
 {% endblock %}
 
 {% block content %}
+
     <ul class="moviedex-container">
         {% for movie in display_movies %}
             <li class="moviedex-poster">
-            {% if movie %}
-
+            {% if no_catched and movie.i == 1 %}
+                <div class="moviedex-empty">No caught Moviemons</div>
+            {% endif %}
+            {% if movie.movie %}
                 <img class="poster"
                      align="left"
                      src="{{ movie.movie.poster_url}}"

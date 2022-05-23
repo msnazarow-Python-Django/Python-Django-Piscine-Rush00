@@ -60,7 +60,7 @@ class GameManager:
         self.game_data = GameData(player_strength=settings.DEFAULT_PLAYER_STRENGTH,
                                   player_position=list(settings.DEFAULT_PLAYER_POSITION),
                                   player_movieballs=settings.DEFAULT_PLAYER_MOVIEBALLS,
-                                  captured_moviemon_ids=set(),
+                                  captured_moviemon_ids=[],
                                   non_captured_moviemon_ids=settings.MOVIE_IDS,
                                   movie_info=Moviemon.get_movies(),
                                   moviedex_position=0,
@@ -126,7 +126,7 @@ class GameManager:
 
         self.game_data.map[self.game_data.player_position[1], self.game_data.player_position[0]] = -1
 
-    def change_moviedex_postition(self, value):
+    def change_moviedex_position(self, value):
         new_position = self.game_data.moviedex_position + value
         if 0 < new_position < len(self.game_data.captured_moviemon_ids):
             self.game_data.moviedex_position = new_position
