@@ -10,9 +10,11 @@ from django.conf import settings
 from moviedex.service import Moviemon
 import numpy as np
 
+
 def forDjango(cls):
     cls.do_not_call_in_templates = True
     return cls
+
 
 @forDjango
 class GameState(Enum):
@@ -20,6 +22,9 @@ class GameState(Enum):
     worldmap = 1
     movieball_found = 9
     ready_to_battle = 2
+    catch_moviemon = 10
+    missed_moviemon = 11
+    out_of_movieballs = 12
     in_battle = 3
     moviedex = 4
     moviedex_detail = 5
@@ -48,6 +53,8 @@ class GameData:
 class GameManager:
 
     def __init__(self):
+        self.moviemons_on_the_map = min(len(settings.MOVIE_IDS), max(settings.FRAME_SIZE))
+        self.movieballs_on_the_map = min(len(settings.MOVIE_IDS), max(settings.FRAME_SIZE))
         self.game_data: GameData
         self.load_default_settings()
 
@@ -84,9 +91,11 @@ class GameManager:
             current_page='/'
         )
 
-        for i in range(min(len(settings.MOVIE_IDS), max(settings.FRAME_SIZE))):
+        for i in range(self.moviemons_on_the_map):
             self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][
                 random.randint(0, settings.MAP_SIZE[0] - 1)] = 2
+
+        for i in range(self.movieballs_on_the_map):
             self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][
                 random.randint(0, settings.MAP_SIZE[0] - 1)] = 1
 
@@ -169,7 +178,6 @@ class GameManager:
                 os.remove(file)
         self.save('ABC'[slot_pos])
 
-
     def load_game(self):
         pos = self.game_data.slot_position
         slot = self.game_data.save_slots[pos][1]
@@ -182,3 +190,18 @@ class GameManager:
 
     def reset_slot_position(self):
         self.game_data.slot_position = 0
+
+    def catch_chance(self, moviemon_id):
+        monster_strength = float(self.game_data.movie_info[moviemon_id].rating)
+        return int(max(1.0, min(90.0, 50 - monster_strength * 10 + self.game_data.player_strength * 5)))
+
+    def dice_roll(self, catch_chance):
+        return catch_chance > random.random() * 100
+
+    def add_random_place_movieball(self):
+        self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][
+            random.randint(0, settings.MAP_SIZE[0] - 1)] = 1
+
+    def add_random_place_moviemon(self):
+        self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][
+            random.randint(0, settings.MAP_SIZE[0] - 1)] = 2

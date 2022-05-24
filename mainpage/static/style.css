@@ -35,8 +35,8 @@
 
 .gameboy .screen-area .display {
   background-color: #929d97;
-  height: 190px;
-  width: 335px;
+    height: 190px;
+    width: 335px;
   border-radius: 3px;
   margin-bottom: 15px;
   text-align: center;

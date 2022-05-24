@@ -5,6 +5,8 @@ from Moviemon.GameManager import GameManager, GameState
 from Moviemon.mixins import GamedataContextMixin
 
 game_manager: GameManager = GameManager()
+
+
 class IndexView(GamedataContextMixin, generic.TemplateView):
     template_name = 'mainpage/index.html'
 
