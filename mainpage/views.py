@@ -1,5 +1,6 @@
 import os
 
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import generic
 
@@ -28,3 +29,4 @@ class IndexView(GamedataContextMixin, generic.TemplateView):
             game_manager.game_data.state = GameState.loading
             game_manager.game_data.current_page = "/options/load_game"
             return redirect('/options/load_game')
+        return HttpResponseRedirect(request.path_info)
