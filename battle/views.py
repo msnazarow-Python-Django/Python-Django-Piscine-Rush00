@@ -38,6 +38,7 @@ class BattleView(GamedataContextMixin, TemplateView):
                     game_manager.game_data.state = GameState.catch_moviemon
                     game_manager.game_data.non_captured_moviemon_ids.discard(moviemon_id)
                     game_manager.game_data.captured_moviemon_ids.append(moviemon_id)
+                    game_manager.game_data.player_strength += 1
                 else:
                     game_manager.game_data.state = GameState.missed_moviemon
             else:
