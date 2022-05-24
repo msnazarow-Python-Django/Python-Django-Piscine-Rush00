@@ -19,7 +19,6 @@ class LoadView(GamedataContextMixin, View):
 
     def post(self, request):
         key = request.POST.get('KEY')
-        print(key, request.path_info)
         if not GameManager().game_data.loaded:
 
             if key == 'A':

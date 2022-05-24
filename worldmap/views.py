@@ -34,14 +34,14 @@ class WorldmapView(GamedataContextMixin, TemplateView):
                 page = f'/battle/{game_manager.get_random_movie()}'
                 game_manager.game_data.current_page = page
                 game_manager.game_data.state = GameState.in_battle
-                game_manager.moviemons_on_the_map -= 1
-                if game_manager.moviemons_on_the_map < len(game_manager.game_data.non_captured_moviemon_ids):
+                game_manager.game_data.moviemons_on_the_map -= 1
+                if game_manager.game_data.moviemons_on_the_map < len(game_manager.game_data.non_captured_moviemon_ids):
                     game_manager.add_random_place_moviemon()
-                    game_manager.moviemons_on_the_map += 1
                 return redirect(page)
         elif game_manager.game_data.state == GameState.movieball_found:
             if key == 'A':
-                game_manager.game_data.state = GameState.worldmap
+                game_manager.game_data.movieballs_on_the_map -= 1
                 game_manager.game_data.player_movieballs += 1
+                game_manager.game_data.state = GameState.worldmap
                 game_manager.add_random_place_movieball()
         return HttpResponseRedirect(request.path_info)

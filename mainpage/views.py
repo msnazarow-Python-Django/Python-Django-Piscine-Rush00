@@ -1,3 +1,5 @@
+import os
+
 from django.shortcuts import render, redirect
 from django.views import generic
 
@@ -18,6 +20,7 @@ class IndexView(GamedataContextMixin, generic.TemplateView):
     def post(self, request, *args, **kwargs):
         key = request.POST.get("KEY")
         if key == "A":
+            game_manager.load_default_settings()
             game_manager.game_data.state = GameState.worldmap
             game_manager.game_data.current_page = "/worldmap"
             return redirect('/worldmap')

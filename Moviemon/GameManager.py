@@ -47,16 +47,18 @@ class GameData:
     save_slots: [str, str]
     loaded: bool
     current_page: str
-
+    moviemons_on_the_map: int
+    movieballs_on_the_map: int
 
 @singleton
 class GameManager:
 
     def __init__(self):
-        self.moviemons_on_the_map = min(len(settings.MOVIE_IDS), max(settings.FRAME_SIZE))
-        self.movieballs_on_the_map = min(len(settings.MOVIE_IDS), max(settings.FRAME_SIZE))
-        self.game_data: GameData
-        self.load_default_settings()
+        try:
+            self.load_file("current_game.mmg")
+        except:
+            self.game_data: GameData
+            self.load_default_settings()
 
     def load(self, game_data: GameData):
         self.game_data = game_data
@@ -88,14 +90,16 @@ class GameManager:
                 ['Slot C', 'Free']
             ],
             loaded=False,
-            current_page='/'
+            current_page='/',
+            moviemons_on_the_map=min(len(settings.MOVIE_IDS), max(settings.FRAME_SIZE)),
+            movieballs_on_the_map=min(len(settings.MOVIE_IDS), max(settings.FRAME_SIZE))
         )
 
-        for i in range(self.moviemons_on_the_map):
+        for i in range(self.game_data.moviemons_on_the_map):
             self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][
                 random.randint(0, settings.MAP_SIZE[0] - 1)] = 2
 
-        for i in range(self.movieballs_on_the_map):
+        for i in range(self.game_data.movieballs_on_the_map):
             self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][
                 random.randint(0, settings.MAP_SIZE[0] - 1)] = 1
 
@@ -201,7 +205,9 @@ class GameManager:
     def add_random_place_movieball(self):
         self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][
             random.randint(0, settings.MAP_SIZE[0] - 1)] = 1
+        self.game_data.movieballs_on_the_map += 1
 
     def add_random_place_moviemon(self):
         self.game_data.map[random.randint(0, settings.MAP_SIZE[0] - 1)][
             random.randint(0, settings.MAP_SIZE[0] - 1)] = 2
+        self.game_data.moviemons_on_the_map += 1
