@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'middleware.SaveStateMiddleware.SaveStateMiddleware'
 ]
 
 ROOT_URLCONF = 'Moviemon.urls'
