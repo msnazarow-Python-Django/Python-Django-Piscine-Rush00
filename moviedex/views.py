@@ -27,7 +27,7 @@ class MoviedexView(GamedataContextMixin, View):
         no_catched = True
         for i in range(3):
             movie = None
-            if mov_pos + i - 1 >= 0 and i < len(moviemons):
+            if mov_pos + i - 1 >= 0 and mov_pos + i - 1 < len(moviemons):
                 movie = moviemons[mov_pos - 1 + i]
                 no_catched = False
             display_movies[i] = {
@@ -40,15 +40,12 @@ class MoviedexView(GamedataContextMixin, View):
 
     def post(self, request, *args, **kwargs):
         key = request.POST.get('KEY')
-        print(key)
         if key == 'SELECT':
             game_manager.reset_slot_position()
             page = '/worldmap'
             game_manager.game_data.current_page = page
             return redirect(page)
         elif key == 'A':
-            game_manager.reset_slot_position()
-
             if not game_manager.game_data.captured_moviemon_ids:
                 return HttpResponseRedirect(request.path_info)
             movie_id = game_manager.game_data.captured_moviemon_ids[
