@@ -344,7 +344,7 @@ body {
   margin: 0 auto;
 }
 
-#START, #SELECT, #A, #B {
+#START, #SELECT {
   visibility: hidden;
 }
 

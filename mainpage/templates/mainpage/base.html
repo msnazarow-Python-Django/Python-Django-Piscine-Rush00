@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}My site{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script type="text/javascript" src="{% static 'button_events.js' %}"></script>
     {% block style %}{% endblock %}
 </head>
 <body>
@@ -32,15 +33,15 @@
     <form class="controls" method="POST">
         {% csrf_token %}
         <div class="dpad">
-            <input class="up" type="submit" name="KEY" value="UP">
-            <input class="right" type="submit" name="KEY" value="RIGHT">
-            <input class="down" type="submit" name="KEY" value="DOWN">
-            <input class="left" type="submit" name="KEY" value="LEFT">
+            <input class="up" id="UP" type="submit" name="KEY" value="UP">
+            <input class="right" id="RIGHT" type="submit" name="KEY" value="RIGHT">
+            <input class="down" id="DOWN" type="submit" name="KEY" value="DOWN">
+            <input class="left" id="LEFT" type="submit" name="KEY" value="LEFT">
             <div class="middle"></div>
         </div>
         <div class="a-b">
-            <input class="b" type="submit" name="KEY" value="B">
-            <input class="a" type="submit" name="KEY" value="A">
+            <input class="b" id="B" type="submit" name="KEY" value="B">
+            <input class="a" id="A" type="submit" name="KEY" value="A">
         </div>
     </form>
 
