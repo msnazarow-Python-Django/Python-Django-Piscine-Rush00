@@ -1,8 +1,6 @@
 from __future__ import annotations
-import random
 import requests
 from django.conf import settings
-
 
 class Moviemon:
     def __init__(self, movie: dict):
@@ -19,17 +17,16 @@ class Moviemon:
     def get_movies() -> dict[str, Moviemon]:
         """
 
-        @return: Returns a dictionary with a length of 10 consist of key: 'movie_id', value: 'Moviemon'
+        @return: Returns a dictionary with all movies consist of key: 'movie_id', value: 'Moviemon'
         """
         movies = {}
-        ids = tuple(settings.MOVIE_IDS)
         # TODO function MUST get info about ALL films from MOVIE_IDS
-        while len(movies) < 10:
-            random_id = random.choice(ids)
-            if random_id not in movies:
-                movie = Moviemon.__get_movie_by_id(random_id)
-                if movie:
-                    movies.update({random_id: Moviemon(movie)})
+        for movie_id in settings.MOVIE_IDS:
+            movie = Moviemon.__get_movie_by_id(movie_id)
+            if movie:
+                movies.update({movie_id: Moviemon(movie)})
+            else:
+                raise Exception('Movie not found')
         return movies
 
     @staticmethod

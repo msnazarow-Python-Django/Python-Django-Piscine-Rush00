@@ -1,3 +1,4 @@
+import copy
 import os
 import pickle
 import random
@@ -79,7 +80,7 @@ class GameManager:
             player_position=list(settings.DEFAULT_PLAYER_POSITION),
             player_movieballs=settings.DEFAULT_PLAYER_MOVIEBALLS,
             captured_moviemon_ids=[],
-            non_captured_moviemon_ids=settings.MOVIE_IDS,
+            non_captured_moviemon_ids=copy.copy(settings.MOVIE_IDS),
             movie_info=Moviemon.get_movies(),
             slot_position=0,
             state=GameState.start_screen,
