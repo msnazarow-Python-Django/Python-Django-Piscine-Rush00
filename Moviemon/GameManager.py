@@ -152,7 +152,7 @@ class GameManager:
     def change_moviedex_position(self, value):
         new_position = self.game_data.slot_position + value
         if 0 <= new_position < len(self.game_data.captured_moviemon_ids):
-            self.game_data.moviedex_position = new_position
+            self.game_data.slot_position = new_position
 
     def change_slot_position(self, value):
         new_position = self.game_data.slot_position + value
